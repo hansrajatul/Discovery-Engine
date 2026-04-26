@@ -1,0 +1,18 @@
+name: KDE Deploy
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install Ansible
+        run: pip install ansible
+
+      - name: Run Playbook
+        run: ansible-playbook ansible/deploy-agent.yml -i ansible/inventory.ini
