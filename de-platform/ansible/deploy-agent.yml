@@ -1,0 +1,23 @@
+- hosts: linux
+  become: yes
+
+  tasks:
+    - name: Create directory
+      file:
+        path: /opt/kde-agent
+        state: directory
+
+    - name: Copy agent
+      copy:
+        src: ../agent/
+        dest: /opt/kde-agent/
+
+    - name: Install python deps
+      pip:
+        requirements: /opt/kde-agent/requirements.txt
+
+    - name: Setup cron job
+      cron:
+        name: "KDE Scan"
+        minute: "*/30"
+        job: "python3 /opt/kde-agent/connector.py"
